@@ -60,7 +60,7 @@ class StatusesTag < ApplicationRecord
         tag = Tag.find(k.to_i)
         sl = score_level(now: n, level_last: l_l, trend_last: t_l)
         st = score_trend(level: sl, level_last: l_l, trend_last: t_l)
-        if (sl + st) < 0.5
+        if (sl + st) < 0.1
           next
         end
         level_now[k] = sl.round(3)
