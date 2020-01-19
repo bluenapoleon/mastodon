@@ -85,8 +85,8 @@ class HashtagTimeline extends React.PureComponent {
     let all  = (tags.all || []).map(tag => tag.value);
     let none = (tags.none || []).map(tag => tag.value);
 
-    [id, ...any].map((tag) => {
-      this.disconnects.push(dispatch(connectHashtagStream(id, tag, isLocal, (status) => {
+    [id, ...any].map(tag => {
+      this.disconnects.push(dispatch(connectHashtagStream(id, tag, status => {
         let tags = status.tags.map(tag => tag.name);
 
         return all.filter(tag => tags.includes(tag)).length === all.length &&
@@ -105,14 +105,23 @@ class HashtagTimeline extends React.PureComponent {
     const { id, tags } = this.props.params;
 
     this._subscribe(dispatch, id, tags);
+<<<<<<< HEAD
     dispatch(expandHashtagTimeline(id, { isLocal, tags }));
+=======
+    dispatch(expandHashtagTimeline(id, { tags }));
+>>>>>>> v3.0.1
   }
 
   componentWillReceiveProps (nextProps) {
     const { dispatch, params } = this.props;
     const { isLocal } = nextProps;
     const { id, tags } = nextProps.params;
+<<<<<<< HEAD
     if (id !== params.id || this.props.isLocal !== isLocal || !isEqual(tags, params.tags)) {
+=======
+
+    if (id !== params.id || !isEqual(tags, params.tags)) {
+>>>>>>> v3.0.1
       this._unsubscribe();
       this._subscribe(dispatch, id, isLocal, tags);
       this.props.dispatch(clearTimeline(`hashtag:${id}`));
@@ -140,7 +149,7 @@ class HashtagTimeline extends React.PureComponent {
     const pinned = !!columnId;
 
     return (
-      <Column ref={this.setRef} label={`#${id}`}>
+      <Column bindToDocument={!multiColumn} ref={this.setRef} label={`#${id}`}>
         <ColumnHeader
           icon='hashtag'
           active={hasUnread}
@@ -169,6 +178,7 @@ class HashtagTimeline extends React.PureComponent {
           onLoadMore={this.handleLoadMore}
           emptyMessage={<FormattedMessage id='empty_column.hashtag' defaultMessage='There is nothing in this hashtag yet.' />}
           shouldUpdateScroll={shouldUpdateScroll}
+          bindToDocument={!multiColumn}
         />
       </Column>
     );
