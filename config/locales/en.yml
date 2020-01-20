@@ -736,7 +736,6 @@ en:
     lists: Lists
     mutes: You mute
     storage: Media storage
-<<<<<<< HEAD
   favourite_tags:
     delete_it: delete
     edit:
@@ -749,13 +748,11 @@ en:
     name_of_tag: Name of tag
     order: order
     submit: Create favourite tag
-=======
   featured_tags:
     add_new: Add new
     errors:
       limit: You have already featured the maximum amount of hashtags
     hint_html: "<strong>What are featured hashtags?</strong> They are displayed prominently on your public profile and allow people to browse your public posts specifically under those hashtags. They are a great tool for keeping track of creative works or long-term projects."
->>>>>>> v3.0.1
   filters:
     contexts:
       home: Home timeline
@@ -1034,13 +1031,10 @@ en:
     development: Development
     edit_profile: Edit profile
     export: Data export
-<<<<<<< HEAD
     favourite_tags: Favourite tags
     followers: Authorized followers
-=======
     featured_tags: Featured hashtags
     identity_proofs: Identity proofs
->>>>>>> v3.0.1
     import: Import
     import_and_export: Import and export
     migrate: Account migration
@@ -1232,7 +1226,7 @@ en:
       edit_profile_step: You can customize your profile by uploading an avatar, header, changing your display name and more. If you’d like to review new followers before they’re allowed to follow you, you can lock your account.
       explanation: Here are some tips to get you started
       final_action: Start posting
-      final_step: 'Start posting! Even without followers your public messages may be seen by others, for example on the local timeline and in hashtags. You may want to introduce yourself on the #introductions hashtag.'
+      final_step: 'Start posting! Even without followers your public messages may be seen by others, for example on the local timeline and in hashtags. You may want to introduce yourself on the #Pの自己紹介 hashtag.'
       full_handle: Your full handle
       full_handle_hint: This is what you would tell your friends so they can message or follow you from another server.
       review_preferences_action: Change preferences

@@ -115,35 +115,10 @@ class TrendingTags
       redis.expire(key, EXPIRE_HISTORY_AFTER)
     end
 
-<<<<<<< HEAD
-    def increment_vote!(tag_id, at_time)
-      key      = "#{KEY}:#{at_time.beginning_of_day.to_i}"
-      expected = redis.pfcount("activity:tags:#{tag_id}:#{(at_time - 1.day).beginning_of_day.to_i}:accounts").to_f
-      expected = 1.0 if expected.zero?
-      observed = redis.pfcount("activity:tags:#{tag_id}:#{at_time.beginning_of_day.to_i}:accounts").to_f
-
-      if expected > observed || observed < THRESHOLD
-        redis.zrem(key, tag_id.to_s)
-      else
-        score = ((observed - expected)**2) / expected
-        redis.zadd(key, score, tag_id.to_s)
-      end
-
-      redis.expire(key, EXPIRE_TRENDS_AFTER)
-    end
-
-    def disallowed_hashtags
-      return @disallowed_hashtags if defined?(@disallowed_hashtags)
-
-      @disallowed_hashtags = Setting.disallowed_hashtags.nil? ? [] : Setting.disallowed_hashtags
-      @disallowed_hashtags = @disallowed_hashtags.split(' ') if @disallowed_hashtags.is_a? String
-      @disallowed_hashtags = @disallowed_hashtags.map(&:downcase)
-=======
     def increment_use!(tag_id, at_time)
       key = "#{KEY}:used:#{at_time.beginning_of_day.to_i}"
       redis.sadd(key, tag_id)
       redis.expire(key, EXPIRE_HISTORY_AFTER)
->>>>>>> v3.0.1
     end
   end
 end
