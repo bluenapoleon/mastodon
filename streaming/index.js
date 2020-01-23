@@ -545,7 +545,13 @@ const startWorker = (workerId) => {
       return;
     }
 
-    streamFrom(`timeline:hashtag:${tag.toLowerCase()}`, req, streamToHttp(req, res), streamHttpEnd(req), true);
+    if (req.accountId) {
+      log.verbose(`timeline:hashtag:${tag.toLowerCase()}:authorized req.accountId: ${req.accountId}`);
+      streamFrom(`timeline:hashtag:${tag.toLowerCase()}:authorized`, req, streamToHttp(req, res), streamHttpEnd(req), true);
+    } else {
+      log.verbose(`timeline:hashtag:${tag.toLowerCase()} req.accountId: ${req.accountId}`);
+      streamFrom(`timeline:hashtag:${tag.toLowerCase()}`, req, streamToHttp(req, res), streamHttpEnd(req), true);
+    }
   });
 
   app.get('/api/v1/streaming/hashtag/local', (req, res) => {
@@ -556,7 +562,13 @@ const startWorker = (workerId) => {
       return;
     }
 
-    streamFrom(`timeline:hashtag:${tag.toLowerCase()}:local`, req, streamToHttp(req, res), streamHttpEnd(req), true);
+    if (req.accountId) {
+      log.verbose(`timeline:hashtag:${tag.toLowerCase()}:authorized:local req.accountId: ${req.accountId}`);
+      streamFrom(`timeline:hashtag:${tag.toLowerCase()}:authorized:local`, req, streamToHttp(req, res), streamHttpEnd(req), true);
+    } else {
+      log.verbose(`timeline:hashtag:${tag.toLowerCase()}:local req.accountId: ${req.accountId}`);
+      streamFrom(`timeline:hashtag:${tag.toLowerCase()}:local`, req, streamToHttp(req, res), streamHttpEnd(req), true);
+    }
   });
 
   app.get('/api/v1/streaming/list', (req, res) => {
@@ -612,7 +624,13 @@ const startWorker = (workerId) => {
         return;
       }
 
-      streamFrom(`timeline:hashtag:${location.query.tag.toLowerCase()}`, req, streamToWs(req, ws), streamWsEnd(req, ws), true);
+      if (req.accountId) {
+        log.verbose(`timeline:hashtag:${location.query.tag.toLowerCase()}:authorized req.accountId: ${req.accountId}`);
+        streamFrom(`timeline:hashtag:${location.query.tag.toLowerCase()}:authorized`, req, streamToWs(req, ws), streamWsEnd(req, ws), true);
+      } else {
+        log.verbose(`timeline:hashtag:${location.query.tag.toLowerCase()} req.accountId: ${req.accountId}`);
+        streamFrom(`timeline:hashtag:${location.query.tag.toLowerCase()}`, req, streamToWs(req, ws), streamWsEnd(req, ws), true);
+      }
       break;
     case 'hashtag:local':
       if (!location.query.tag || location.query.tag.length === 0) {
@@ -620,7 +638,13 @@ const startWorker = (workerId) => {
         return;
       }
 
-      streamFrom(`timeline:hashtag:${location.query.tag.toLowerCase()}:local`, req, streamToWs(req, ws), streamWsEnd(req, ws), true);
+      if (req.accountId) {
+        log.verbose(`timeline:hashtag:${location.query.tag.toLowerCase()}:authorized:local req.accountId: ${req.accountId}`);
+        streamFrom(`timeline:hashtag:${location.query.tag.toLowerCase()}:authorized:local`, req, streamToWs(req, ws), streamWsEnd(req, ws), true);
+      } else {
+        log.verbose(`timeline:hashtag:${location.query.tag.toLowerCase()}:local req.accountId: ${req.accountId}`);
+        streamFrom(`timeline:hashtag:${location.query.tag.toLowerCase()}:local`, req, streamToWs(req, ws), streamWsEnd(req, ws), true);
+      }
       break;
     case 'list':
       const listId = location.query.list;

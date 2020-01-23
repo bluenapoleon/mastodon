@@ -17,12 +17,13 @@ class FanOutOnWriteService < BaseService
       deliver_to_followers(status)
       deliver_to_lists(status)
     end
-
-    return if status.account.silenced? || !status.public_visibility? || status.reblog?
+    
+    is_reply = (status.reply? && status.in_reply_to_account_id != status.account_id)
+    return if status.account.silenced? || !status.public_visibility? && !(status.unlisted_visibility? && !is_reply) || status.reblog?
 
     deliver_to_hashtags(status)
 
-    return if status.reply? && status.in_reply_to_account_id != status.account_id
+    return if status.reply? && status.in_reply_to_account_id != status.account_id || status.unlisted_visibility?
 
     deliver_to_public(status)
     deliver_to_media(status) if status.media_attachments.any?
@@ -72,8 +73,17 @@ class FanOutOnWriteService < BaseService
     Rails.logger.debug "Delivering status #{status.id} to hashtags"
 
     status.tags.pluck(:name).each do |hashtag|
-      Redis.current.publish("timeline:hashtag:#{hashtag.mb_chars.downcase}", @payload)
-      Redis.current.publish("timeline:hashtag:#{hashtag.mb_chars.downcase}:local", @payload) if status.local?
+      if status.public_visibility?
+        Rails.logger.debug "Delivering public tagged status #{status.id}"
+        Redis.current.publish("timeline:hashtag:#{hashtag}", @payload)
+        Redis.current.publish("timeline:hashtag:#{hashtag}:local", @payload) if status.local?
+        Redis.current.publish("timeline:hashtag:#{hashtag}:authorized", @payload)
+        Redis.current.publish("timeline:hashtag:#{hashtag}:authorized:local", @payload) if status.local?
+      else
+        Rails.logger.debug "Delivering unlisted tagged status #{status.id}"
+        Redis.current.publish("timeline:hashtag:#{hashtag}:authorized", @payload)
+        Redis.current.publish("timeline:hashtag:#{hashtag}:authorized:local", @payload) if status.local?
+      end
     end
   end
 
