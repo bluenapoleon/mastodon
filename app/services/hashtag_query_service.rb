@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HashtagQueryService < BaseService
-  LIMIT_PER_MODE = 4
+  LIMIT_PER_MODE = 40
 
   def call(tag, params, account = nil, local = false)
     tags = tags_for(Array(tag.name) | Array(params[:any])).pluck(:id)
